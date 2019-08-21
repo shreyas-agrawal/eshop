@@ -15,8 +15,4 @@ export class UserService {
       email : user.email
     });
   }
-
-  getCategories(): AngularFireList<any[]> {
-    return this.db.list('/categories/', ref => ref.orderByChild('name'));
-  }
 }
