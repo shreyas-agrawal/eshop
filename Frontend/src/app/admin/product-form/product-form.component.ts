@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
 import { AngularFireList } from '@angular/fire/database';
 import { ProductService } from 'src/app/services/product.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import 'rxjs/add/operator/take';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-product-form',
@@ -12,22 +14,44 @@ import { Router } from '@angular/router';
 export class ProductFormComponent implements OnInit {
 
   categories;
+  product = {};
+  id;
 
   constructor(
-    private userService: UserService,
+    private categoryService: CategoryService,
+    private route: ActivatedRoute,
     private productService: ProductService,
     private router: Router) {
-    userService.getCategories().valueChanges().subscribe((categories) => {
+    categoryService.getCategories().snapshotChanges().subscribe((categories) => {
       this.categories = categories;
-      console.log(this.categories);
     });
+
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.productService.getProduct(this.id).snapshotChanges().take(1).subscribe(p => {
+        this.product = p.payload.val();
+        console.log('product', this.product);
+      });
+    }
   }
 
   ngOnInit() {
   }
 
   save(product){
-    this.productService.addProduct(product);
+    if(this.id){
+      this.productService.updateProduct(this.id, product);
+    } else {
+      this.productService.addProduct(product);
+    }
+    this.router.navigate(['/admin/products']);
+  }
+
+  delete() {
+    if (!confirm('Are you sure you want to delete the product')) {
+      return;
+    }
+    this.productService.deleteProduct(this.id);
     this.router.navigate(['/admin/products']);
   }
 

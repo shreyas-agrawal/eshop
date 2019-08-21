@@ -14,7 +14,7 @@ import { ProductFormComponent } from './admin/product-form/product-form.componen
 const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: ProductsComponent
   },
   {
     path : 'products',
