@@ -13,8 +13,9 @@ import { CategoryService } from 'src/app/services/category.service';
 })
 export class ProductFormComponent implements OnInit {
 
-  categories;
+  categories = [];
   product = {};
+  category = {};
   id;
 
   constructor(
@@ -23,7 +24,12 @@ export class ProductFormComponent implements OnInit {
     private productService: ProductService,
     private router: Router) {
     categoryService.getCategories().snapshotChanges().subscribe((categories) => {
-      this.categories = categories;
+      categories.forEach(c => {
+        this.category = c.payload.val();
+        this.category['key'] = c.key;
+        this.categories.push(this.category);
+        // console.log(this.categories);
+      })
     });
 
     this.id = this.route.snapshot.paramMap.get('id');
