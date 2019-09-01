@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ShoppingCart } from '../models/shopping-cart';
+import { ShoppingCartService } from '../services/shopping-cart.service';
+import { Observable } from 'rxjs';
+import { AngularFireObject } from '@angular/fire/database';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -7,9 +11,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShoppingCartComponent implements OnInit {
 
-  constructor() { }
+  cart$;
 
-  ngOnInit() {
+  constructor(private shoppingCartService: ShoppingCartService) { }
+
+  async ngOnInit() {
+    this.cart$ = (await this.shoppingCartService.getCart());
+    console.log('cart', this.cart$);
+  }
+
+  clearCart(){
+    this.shoppingCartService.clearCart();
   }
 
 }
