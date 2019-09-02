@@ -29,5 +29,6 @@
       </tr>
     </tfoot>
   </table>
-  <button class="btn btn-danger btn-sm" (click)="clearCart()">Clear Shopping Cart</button>
+  <a *ngIf="cart.items.length" routerLink="/check-out" class="btn btn-primary">CheckOut</a>
+  <button *ngIf="cart.items.length" class="btn btn-danger btn-sm" (click)="clearCart()">Clear Shopping Cart</button>
 </div>
