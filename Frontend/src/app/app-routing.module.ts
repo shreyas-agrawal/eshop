@@ -29,7 +29,7 @@ const routes: Routes = [
     component: CheckOutComponent
   },
   {
-    path : 'order-success',
+    path : 'order-success/:id',
     component: OrderSuccessComponent
   },
   {
