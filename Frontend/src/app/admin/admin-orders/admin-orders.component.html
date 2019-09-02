@@ -1,3 +1,12 @@
-<p>
-  admin-orders works!
-</p>
+<table class="table">
+  <tr>
+    <th>Customer</th>
+    <th>Date</th>
+    <th></th>
+  </tr>
+  <tr *ngFor="let order of orders">
+    <td *ngIf="auth.user$ | async as user"> {{ user.displayName }} </td>
+    <td> {{ getDate(order.datePlaced) }}</td>
+    <td> <a routerLink="#">View</a> </td>
+  </tr>
+</table>
